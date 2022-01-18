@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+   <div class="container">
+        <form class="form" id="login" method="post">
+            {% csrf_token %}
+            <h1 class="form__title">Login</h1>
+
+            <div class="form__message form__message--error">
+                {% if messages %}
+                    {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags}}" {% endif %}>{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form__input-group">
+                <input type="text" class="form__input" autofocus placeholder="Username" name="username">
+                <div class="form__input-error-message"></div>
+            </div>
+            <div class="form__input-group">
+                <input type="password" class="form__input" autofocus placeholder="Password" name="password">
+                <div class="form__input-error-message"></div>
+            </div>
+            <button class="form__button" type="submit">Continue</button>
+            <p class="form__text">
+                <!--a href="#" class="form__link">Forgot your password?</a-->
+            </p>
+            <p class="form__text">
+                <a class="form__link" href="./" id="linkCreateAccount">Don't have an account? Create account</a>
+            </p>
+        </form>
+
+
+
+        <form class="form form--hidden" id="createAccount" method="post">
+            {% csrf_token %}
+            <h1 class="form__title">Create Account</h1>
+
+            <div class="form__message form__message--error">
+                {% if messages %}
+                    {% for message in messages %}
+                        <p {% if message.tags %} class="{{ message.tags}}" {% endif %}>{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form__input-group">
+                <input type="text" name="username" id="signupUsername" class="form__input" autofocus placeholder="Username" required>
+                <div class="form__input-error-message"></div>
+            </div>
+            <div class="form__input-group">
+                <input type="text" name="email" class="form__input" autofocus placeholder="Email Address" required>
+                <div class="form__input-error-message"></div>
+            </div>
+            <div class="form__input-group">
+                <input type="password" name="password1" class="form__input" autofocus placeholder="Password" required>
+                <div class="form__input-error-message"></div>
+            </div>
+            <div class="form__input-group">
+                <input type="password" name="password2" class="form__input" autofocus placeholder="Confirm password" required>
+                <div class="form__input-error-message"></div>
+            </div>
+            <input type="submit" class="form__button" name="register" value="Continue" />
+
+            <p class="form__text">
+                <a class="form__link" href="./" id="linkLogin">Already have an account? Sign in</a>
+            </p>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% load static %}
+
+<div class="wrapper hover_collapse">
+<!-- top navigation bar -->
+<div class="top_navbar">
+
+<!-- logo -->
+    <div class="logo">Administrators</div>
+<!-- menu button -->
+   <div class="menu">
+         <div class="hamburger">
+         <i class="fas fa-bars"></i>
+         </div>
+         <div class="log">
+             {% if request.user %}
+             {{request.user}}
+             {% endif %}
+         </div>
+       </div>
+       </div>
+
+<!-- side bar -->
+<div class="sidebar">
+
+  <div class="sidebar_inner">
+    <!-- menu item -->
+  <ul id="remove">
+    <!-- <li>
+    <a href="#">
+  <span class="icon"><i class="fa fa-home"></i></span>
+  <span class="text">Home</span>
+    </a>
+    </li> -->
+      <li>
+      <a href="{% url 'dashboard:index' %}">
+    <span class="icon"><i class="fas fa-user-tie"></i></span>
+    <span class="text">View Administrators</span>
+      </a>
+      </li>
+
+      <li>
+      <a href="{% url 'dashboard:candidate' %}">
+    <span class="icon"><i class="fa fa-user"></i></span>
+    <span class="text">Manage Candidate</span>
+      </a>
+      </li>
+
+      <li>
+      <a href="{% url 'polls:index' %}">
+    <span class="icon"><i class="fas fa-poll"></i></span>
+    <span class="text">Check Poll Results</span>
+      </a>
+      </li>
+      <li>
+      <a href="{% url 'core:update_profile' %}">
+    <span class="icon"><i class="fas fa-user-edit"></i></span>
+    <span class="text">Update Profile</span>
+      </a>
+      </li>
+      <li>
+      <a href="{% url 'core:logout' %}">
+    <span class="icon"><i class="fa fa-sign-out"></i></span>
+    <span class="text">Log Out</span>
+      </a>
+      </li>
+  </ul>
+</div>
+
+</div>
+</div>
+
+
+<style>
+
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
+}
+
+button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+}
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+</style>

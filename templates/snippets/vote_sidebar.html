@@ -1,0 +1,72 @@
+{% load static %}
+
+<div class="wrapper hover_collapse">
+    <!-- top navigation bar -->
+    <div class="top_navbar">
+
+    <!-- logo -->
+        <div class="logo">Candidates</div>
+
+    <!-- menu button -->
+       <div class="menu">
+         <div class="hamburger">
+         <i class="fas fa-bars"></i>
+         </div>
+         <div class="log">
+             {% if request.user %}
+             {{request.user}}
+             {% endif %}
+         </div>
+       </div>
+       </div>
+
+    <!-- side bar -->
+    <div class="sidebar">
+
+      <div class="sidebar_inner">
+        <!-- menu item -->
+      <ul id="remove">
+        <!-- <li>
+        <a href="#">
+      <span class="icon"><i class="fa fa-home"></i></span>
+      <span class="text">Home</span>
+        </a>
+        </li> -->
+          <li>
+          <a href="{% url 'voter:index' %}">
+        <span class="icon"><i class="fas fa-user-tie"></i></span>
+        <span class="text">View Candidates</span>
+          </a>
+          </li>
+
+          <li>
+          <a href="{% url 'voter:vote' %}">
+        <span class="icon"><i class="fa fa-user"></i></span>
+        <span class="text">Vote Candidate</span>
+          </a>
+          </li>
+
+
+          <!-- <li>
+          <a href="#">
+        <span class="icon"><i class="fa fa-key"></i></span>
+        <span class="text">Update Password</span>
+          </a>
+          </li> -->
+          <li>
+          <a href="{% url 'voter:update' %}">
+        <span class="icon"><i class="fas fa-user-edit"></i></span>
+        <span class="text">Update Profile</span>
+          </a>
+          </li>
+          <li>
+          <a href="{% url 'core:logout' %}">
+        <span class="icon"><i class="fa fa-sign-out"></i></span>
+        <span class="text">Log Out</span>
+          </a>
+          </li>
+      </ul>
+    </div>
+
+    </div>
+    </div>

@@ -1,0 +1,114 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content = "width = device-width, initial-scale = 1.0">
+<meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+
+<!-- icon style -->
+<script src ="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<title>Admin Dashboard</title>
+
+<!-- CSS link -->
+<link rel ="stylesheet" href = "{% static 'css/style.css' %}">
+    <link rel ="stylesheet" href = "{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+        h1 {
+            color: green;
+        }
+        ul#remove {
+            list-style-type: none;
+            padding: 0;
+        }
+        .left {
+            width : 40%;
+            float: left;
+        }
+        .right {
+            width : 40%;
+            float: right;
+        }
+    </style>
+
+
+</head>
+
+
+<body>
+
+{% include 'snippets/sidebar.html' %}
+
+
+  <br>
+  <br>
+  <br>
+  <br>
+
+
+<h2 style="text-align:center">Evote Admins</h2>
+
+
+<div class="test">
+
+    {% for user in user %}
+        <div class="card">
+            {% if user.profile.profile_image %}
+                <img src="{{ user.profile.profile_image.url }}" alt="{{user.profile}}" style="width:100%">
+            {% else %}
+                <img src="{% static 'img/index.png' %}" />
+            {% endif %}
+
+          <h1>{{user.profile}}</h1>
+          <p class="title">CEO & Co-Founder, Evote</p>
+          <!--p>Harvard University</p-->
+          <div style="margin: 24px 0;">
+            <a href="#"><i class="fa fa-dribbble"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-linkedin"></i></a>
+            <a href="#"><i class="fa fa-facebook"></i></a>
+          </div>
+          <p><button>Contact</button></p>
+        </div>
+    {% endfor %}
+
+
+
+
+</div>
+
+
+<!-- Now activate menu button using Javascript -->
+<script type="text/javascript">
+    var li_items = document.querySelectorAll(".sidebar ul li");
+    var hamburger = document.querySelector(".hamburger");
+    var wrapper = document.querySelector(".wrapper");
+
+    // What will change if you moove the mouse over the side bar
+    li_items.forEach((li_item)=>{
+       li_item.addEventListener("mouseenter", ()=>{
+
+        li_item.closest(".wrapper").classList.remove("hover_collapse");
+
+      })
+    });
+
+    li_items.forEach((li_item)=>{
+       li_item.addEventListener("mouseleave", ()=>{
+
+        li_item.closest(".wrapper").classList.add("hover_collapse");
+
+       })
+    });
+
+    hamburger.addEventListener("click", () => {
+
+        hamburger.closest(".wrapper").classList.toggle("hover_collapse");
+    })
+    </script>
+
+</body>
+</html>
