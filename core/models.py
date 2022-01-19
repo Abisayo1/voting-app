@@ -4,6 +4,9 @@ from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from cloudinary.models import CloudinaryField
+import cloudinary
+import cloudinary.uploader
 
 
 def upload_location(instance, filename):
@@ -19,7 +22,7 @@ class Profile(models.Model):
     slug = models.SlugField(blank=True, null=True)
     phone_number = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(max_length=50, blank=True, null=True)
-    profile_image = models.FileField(upload_to=upload_location, blank=True, null=True)
+    profile_image = CloudinaryField('image', null=True, blank=True)
     dob = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
@@ -28,7 +31,8 @@ class Profile(models.Model):
 
 @receiver(post_delete, sender=Profile)
 def submission_delete(sender, instance, **kwargs):
-    instance.profile_image.delete(False)
+    image = instance.profile_image
+    cloudinary.uploader.destroy(image.public_id, invalidate=True)
 
 
 def pre_save_profile_receiver(sender, instance, *args, **kwargs):

@@ -65,24 +65,24 @@
 
 
                 <td>First name</td>
-                <td><input type = "text" placeholder = "FIRST NAME" name="first_name"></td>
+                <td><input type = "text" placeholder = "FIRST NAME" name="first_name" required></td>
             </tr>
             <tr>
                 
                 <td>Last name</td>
-                <td><input type = "text" placeholder = "LAST NAME" name="last_name"></td>
+                <td><input type = "text" placeholder = "LAST NAME" name="last_name" required></td>
             </tr>
 
             <tr>
                 <td>Department</td>
-                <td><input type="text" name="department"></td>
+                <td><input type="text" name="department" required></td>
 
             </tr>
 
             
             <tr>
                 <td>Roll no</td>
-                <td><input type = "text" name="roll"></td>
+                <td><input type = "text" name="roll" required></td>
             </tr>
 
             <tr>
@@ -95,10 +95,17 @@
             <tr>
 
                 <td>Candidate Name</td>
-                <td><select id="mySelect" name="president">
+                <td>
+                    {% if president %}
+                    <select id="mySelect" name="president">
                     {% for president in president %}
                     <option value="{{president.first_name}}">{{president.first_name}} {{president.last_name}}</option>
                     {% endfor %}
+
+                        {% else %}
+                            <p>No Screened Candidate</p>
+
+                    {% endif %}
 
                            
                 </tr>
@@ -112,11 +119,17 @@
             <tr>
 
                 <td>Candidate Name</td>
-                <td><select id="mySelect1" name="vice_president">
+                <td>
+                    {% if vice_president %}
+                    <select id="mySelect1" name="vice_president">
                     {% for vice_president in vice_president %}
                     <option value="{{vice_president.first_name}}">{{vice_president.first_name}} {{vice_president.last_name}}</option>
                     {% endfor %}
 
+                        {% else %}
+                            <p>No Screened Candidate</p>
+
+                    {% endif %}
                 
                 </tr>
 
@@ -129,10 +142,18 @@
             <tr>
 
                 <td>Candidate Name</td>
-                <td><select id="mySelect1" name="general_secretary">
+
+                <td>
+                    {% if general_secretary %}
+                    <select id="mySelect1" name="general_secretary">
                     {% for general_secretary in general_secretary %}
                     <option value="{{general_secretary.first_name}}">{{general_secretary.first_name}} {{general_secretary.last_name}}</option>
                     {% endfor %}
+
+                    {% else %}
+                            <p>No Screened Candidate</p>
+
+                    {% endif %}
 
                 
                 </tr>

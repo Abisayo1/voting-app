@@ -86,7 +86,12 @@
          <div class="hamburger">
          <i class="fas fa-bars"></i>
          </div>
-
+         <div class="log">
+             {% if request.user %}
+             {{request.user}}
+             {% endif %}
+         </div>
+       </div>
        </div>
 
 <!-- side bar -->

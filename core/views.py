@@ -5,11 +5,13 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.views import View
 from django.contrib.auth.hashers import make_password
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from core.models import Profile
 
 
 class RegisterView(View):
+    login_url = 'core:register'
+
     def get(self, request):
         return render(request, "core/register.html")
 
@@ -20,41 +22,37 @@ class RegisterView(View):
             password = request.POST.get('password1', )
             password2 = request.POST.get('password2', )
 
+            if password != password2:
+                messages.error(request, "Password does not exist, try again!!!")
+                redirect('core:register')
+
             try:
                 query_username = User.objects.get(username=username)
                 messages.error(request, "Username has been taken already, use another.")
                 redirect('core:register')
             except User.DoesNotExist:
-                pass
+                try:
+                    query_email = User.objects.get(email=email)
+                    messages.error(request, "Email has been taken already, use another.")
+                    redirect('core:register')
+                except:
+                    user = User.objects.create(username=username, email=email, password=make_password(password))
+                    user.save()
+                    messages.success(request, "Registration successful.")
+                    login(request, user)
+                    return redirect('voter:index')
+            return render(request, "core/register.html")
 
-            try:
-                query_email = User.objects.get(email=email)
-                messages.error(request, "Email has been taken already, use another.")
-                redirect('core:register')
-            except:
-                pass
-
-            if password != password2:
-                messages.error(request, "Password does not exist, try again!!!")
-                redirect('core:register')
-
-            user = User.objects.create(username=username, email=email, password=make_password(password))
-            user.save()
-            messages.success(request, "Registration successful.")
-            login(request, user)
-            return redirect('voter:index')
         else:
             username = request.POST.get('username', )
             password = request.POST.get('password', )
             user = authenticate(username=username, password=password)
             if user is not None:
-                if user.is_superuser:
+                if user.is_staff:
                     login(request, user)
-                    messages.info(request, f"You are now logged in as {username}")
                     return redirect('dashboard:index')
                 else:
                     login(request, user)
-                    messages.info(request, f"You are now logged in as {username}")
                     return redirect('voter:index')
             else:
                 messages.error(request, "Invalid username and password")
@@ -62,11 +60,15 @@ class RegisterView(View):
 
 
 class IndexView(View):
+    login_url = 'core:register'
+
     def get(self, request):
         return render(request, "core/home.html")
 
 
-class UpdateProfileView(View):
+class UpdateProfileView(LoginRequiredMixin, View):
+    login_url = 'core:register'
+
     def get(self, request):
         profile = Profile.objects.get(user=request.user)
         user = User.objects.get(id=request.user.id)
@@ -109,7 +111,6 @@ class UpdateProfileView(View):
 
         profile.save()
         user.save()
-        messages.success(request, "Profile Updated Successfully!!")
 
         return redirect('core:update_profile')
 

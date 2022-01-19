@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.views import View
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.models import Candidate
 
 
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
+    login_url = 'core:register'
+
     def get(self, request):
         president = Candidate.objects.filter(position='President')
         vice_president = Candidate.objects.filter(position='Vice President')

@@ -1,5 +1,10 @@
 import os
 from pathlib import Path
+import cloudinary_storage
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +35,8 @@ INSTALLED_APPS = [
     'core',
     'dashboard',
     'voters',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +131,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+cloudinary.config(
+  cloud_name="samiklaz",
+  api_key="658273422759664",
+  api_secret="S_k5j6IwqOaAmS_Zpm07XpQ86qw"
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+LOGIN_REDIRECT_URL = '/'

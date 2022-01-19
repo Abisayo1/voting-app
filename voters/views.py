@@ -6,11 +6,13 @@ from django.views import View
 
 from core.models import Profile
 from .models import *
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.models import Candidate
 
 
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
+    login_url = 'core:register'
+
     def get(self, request):
         president = Candidate.objects.filter(position='President')
         vice_president = Candidate.objects.filter(position='Vice President')
@@ -25,7 +27,9 @@ class IndexView(View):
         return render(request, "voters/ViewCandidates.html", context)
 
 
-class VoteView(View):
+class VoteView(LoginRequiredMixin, View):
+    login_url = 'core:register'
+
     def get(self, request):
         president = Candidate.objects.filter(position='President')
         vice_president = Candidate.objects.filter(position='Vice President')
@@ -51,28 +55,42 @@ class VoteView(View):
         general_secretary = request.POST.get('general_secretary', )
         treasurer = request.POST.get('treasurer', )
 
-        candidate_president = Candidate.objects.get(first_name=president)
-        candidate_vp = Candidate.objects.get(first_name=vice_president)
-        candidate_sec_gen = Candidate.objects.get(first_name=general_secretary)
-        candidate_treasurer = Candidate.objects.get(first_name=treasurer)
-
         vote = Vote.objects.create(
             first_name=first_name,
             last_name=last_name,
             department=department,
             roll=roll,
-            president=candidate_president,
-            vice_president=candidate_vp,
-            general_secretary=candidate_sec_gen,
-            treasurer=candidate_treasurer
+
         )
+        vote.save(False)
+
+        if president:
+            candidate_president = Candidate.objects.get(first_name=president)
+            vote.president = candidate_president
+        else:
+            pass
+
+        if treasurer:
+            candidate_treasurer = Candidate.objects.get(first_name=treasurer)
+            vote.treasurer = candidate_treasurer
+        else:
+            pass
+
+        if vice_president:
+            candidate_vp = Candidate.objects.get(first_name=vice_president)
+            vote.vice_president = candidate_vp
+
+        if general_secretary:
+            candidate_sec_gen = Candidate.objects.get(first_name=general_secretary)
+            vote.general_secretary = candidate_sec_gen
 
         vote.save()
-        messages.success(request, "Your vote has been casted successfully")
         return redirect('voter:index')
 
 
-class CandidateUpdate(View):
+class CandidateUpdate(LoginRequiredMixin, View):
+    login_url = 'core:register'
+
     def get(self, request):
         profile = Profile.objects.get(user=request.user)
         user = User.objects.get(id=request.user.id)
@@ -115,6 +133,5 @@ class CandidateUpdate(View):
 
         profile.save()
         user.save()
-        messages.success(request, "Profile Updated Successfully!!")
 
         return redirect('voter:update')
